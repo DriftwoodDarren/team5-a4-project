@@ -18,7 +18,9 @@ namespace MohawkGame2D
         /// </summary>
         public void Setup()
         {
-
+            Window.SetTitle("Dinosaur Game");
+            Window.SetSize(400, 400);
+            Window.ClearBackground(Color.OffWhite);
         }
 
         /// <summary>
