@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Team_5_2D_Game_Assignment
 {
-    class Player
+    public class Player
     {
 
         public Vector2 position;
@@ -17,11 +17,13 @@ namespace Team_5_2D_Game_Assignment
         private float jumpHeight = 5f;
         private bool isJumping = false;
         private bool isOnGround = true;
+        Sound JumpSound;
 
         // Constructor that takes a Vector2 for the player position
         public Player(Vector2 startPosition)
         {
             position = startPosition;
+            JumpSound = Audio.LoadSound("../../../../Assests/Sounds/Jump.wav");
         }
 
         public void Move(bool jumpPressed)
@@ -30,6 +32,7 @@ namespace Team_5_2D_Game_Assignment
             {
                 isJumping = true;
                 isOnGround = false;
+                Audio.Play(JumpSound);
                 velocity = new Vector2(0, -jumpHeight); // set velocity to be up for jump
             }
 
