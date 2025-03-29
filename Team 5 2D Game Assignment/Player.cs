@@ -1,55 +1,53 @@
 ﻿using MohawkGame2D;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Team_5_2D_Game_Assignment
 {
-    class Player
+    public class Player
     {
-
         public Vector2 position;
-        public Vector2 velocity;
-        private Vector2 gravity = new Vector2(0, +10);
-        private float jumpHeight = 5f;
-        private bool isJumping = false;
+        private Vector2 velocity;
+        private Vector2 gravity = new Vector2(0, 300);  
+        private float jumpHeight = 200f;
         private bool isOnGround = true;
+        private float groundLevel; 
+        Sound JumpSound;
 
-        // Constructor that takes a Vector2 for the player position
-        public Player(Vector2 startPosition)
+        public Player(Vector2 startPosition, float platformHeight)
         {
             position = startPosition;
+            groundLevel = platformHeight; // Set the ground level
+            JumpSound = Audio.LoadSound("../../../../Assests/Sounds/Jump.wav");
         }
 
         public void Move(bool jumpPressed)
         {
             if (jumpPressed && isOnGround)
             {
-                isJumping = true;
                 isOnGround = false;
-                velocity = new Vector2(0, -jumpHeight); // set velocity to be up for jump
+                Audio.Play(JumpSound);
+                velocity.Y = -jumpHeight; // Jumping up
             }
 
-            // apply gravity if player is in the air
-            if (!isOnGround)
-            {
-                velocity.Y += gravity.Y * Time.DeltaTime;
-            }
+            // Apply gravity
+            velocity.Y += gravity.Y * Time.DeltaTime;
 
-            // change player position based on velocity
-            position += velocity;
+            // Update position
+            position.Y += velocity.Y * Time.DeltaTime;
 
-            // Check for landing (ground collision)
-            if (position.Y >= 200)
+            // Check if landed on the platform
+            if (position.Y >= groundLevel)
             {
-                position.Y = 200; // Keep player on the ground
+                position.Y = groundLevel;
                 isOnGround = true;
-                isJumping = false;
-                velocity.Y = 0; // Reset velocity after landing
+                velocity.Y = 0; // Stop movement after landing
             }
+        }
+
+        public void Render()
+        {
+            Draw.FillColor = Color.Red;
+            Draw.Rectangle(position.X, position.Y, 20, 20);
         }
 
     }
