@@ -7,7 +7,7 @@ namespace Team_5_2D_Game_Assignment
     {
         public Vector2 position;
         private Vector2 velocity;
-        private Vector2 gravity = new Vector2(0, 300); 
+        private Vector2 gravity = new Vector2(0, 300);  
         private float jumpHeight = 200f;
         private bool isOnGround = true;
         private float groundLevel; 
