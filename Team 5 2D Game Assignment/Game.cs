@@ -1,7 +1,4 @@
-﻿using System;
-using System.Data;
-using System.Linq.Expressions;
-using System.Numerics;
+﻿using System.Numerics;
 using Team_5_2D_Game_Assignment;
 
 namespace MohawkGame2D
@@ -12,8 +9,8 @@ namespace MohawkGame2D
         public string scoreText;
 
         // Setup Screen Variables
-        public bool runningGame;
-        Texture2D backGround = Graphics.LoadTexture("../../../../Assests/Images/start_screen.png");
+        public bool runningGame = false;
+        public bool runStartScreen = true;
 
         // class declarations
         private Player player;
@@ -31,23 +28,13 @@ namespace MohawkGame2D
             Window.SetTitle("Mohawk2D Dino Game");
             Window.SetSize(400, 400);
             Window.TargetFPS = 60;
-
-            ResetGameState();
-
         }
 
         public void Update()
         {
             if (!runningGame)
             {
-                Text.Color = Color.White;
-                Graphics.Draw(backGround, Window.Width / 2, Window.Height / 2);
-                Text.Draw("Press SpaceBar to Start!", 200, 200);
-
-                if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
-                {
-                    runningGame = true;
-                }
+                ResetGameState();
             }
             else
             {
@@ -67,9 +54,10 @@ namespace MohawkGame2D
                 obstacle.Move();
 
                 // Check for collision
+                // If player collides, game stops running - leading to resetGameState
                 if (obstacle.CheckCollision(player))
-                {
-                    score = 0; // Reset score on collision
+                { 
+                    runningGame = false;   
                 }
 
                 // Draw elements
@@ -96,7 +84,34 @@ namespace MohawkGame2D
         public void ResetGameState()
         {
             score = 0;
-            runningGame = false;
+            Window.ClearBackground(Color.OffWhite);
+            Text.Color = Color.Black;
+            obstacle.position.X = 400; 
+         
+            if (runStartScreen)
+            {
+                Text.Draw("Press Spacebar to Start!", 5 , Window.Height / 2.5f);
+                if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
+                {
+                   
+                    // Begins running the game
+                    runningGame = true;
+                  
+                    // When the game ends, else condition activated
+                    runStartScreen = false;
+                }
+            }
+            else
+            {
+                Text.Draw("GAME OVER!", Window.Width / 3, Window.Height / 2.5f);
+
+                // If spacebar pushed, intial If statement true and game fully reset. 
+                if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
+                {
+                    runStartScreen = true;
+                }
+            }
+            
         }
     }
 }
