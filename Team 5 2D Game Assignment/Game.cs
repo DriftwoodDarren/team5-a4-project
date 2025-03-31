@@ -13,7 +13,7 @@ namespace MohawkGame2D
 
         // Setup Screen Variables
         public bool runningGame;
-        Texture2D backGround = Graphics.LoadTexture("../ ../../../Assests/Images/start_screen.jpg");
+        Texture2D backGround = Graphics.LoadTexture("../../../../Assests/Images/start_screen.png");
 
         // class declarations
         private Player player;
@@ -42,8 +42,8 @@ namespace MohawkGame2D
             {
                 Text.Color = Color.White;
                 Graphics.Draw(backGround, Window.Width / 2, Window.Height / 2);
-                Text.Draw("Press SpaceBar to Start!", 200, 200); 
-                
+                Text.Draw("Press SpaceBar to Start!", 200, 200);
+
                 if (Input.IsKeyboardKeyPressed(KeyboardInput.Space))
                 {
                     runningGame = true;
@@ -56,27 +56,28 @@ namespace MohawkGame2D
                 int intScore = (int)score;
                 scoreText = intScore.ToString();
 
-            // Clear screen
-            Window.ClearBackground(Color.OffWhite);
+                // Clear screen
+                Window.ClearBackground(Color.OffWhite);
 
-            // Handle player movement
-            bool jumpPressed = Input.IsKeyboardKeyDown(KeyboardInput.Space);
-            player.Move(jumpPressed);
+                // Handle player movement
+                bool jumpPressed = Input.IsKeyboardKeyDown(KeyboardInput.Space);
+                player.Move(jumpPressed);
 
-            // Move obstacle
-            obstacle.Move();
+                // Move obstacle
+                obstacle.Move();
 
-            // Check for collision
-            if (obstacle.CheckCollision(player))
-            {
-                score = 0; // Reset score on collision
+                // Check for collision
+                if (obstacle.CheckCollision(player))
+                {
+                    score = 0; // Reset score on collision
+                }
+
+                // Draw elements
+                DrawPlatform();
+                player.Render();
+                obstacle.Render();
+                DrawScore();
             }
-
-            // Draw elements
-            DrawPlatform();
-            player.Render();
-            obstacle.Render();
-            DrawScore();
         }
 
         private void DrawPlatform()
