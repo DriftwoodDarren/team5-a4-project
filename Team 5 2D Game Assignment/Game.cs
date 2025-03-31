@@ -56,29 +56,30 @@ namespace MohawkGame2D
                 int intScore = (int)score;
                 scoreText = intScore.ToString();
 
-                //Clear background
-                Window.ClearBackground(Color.OffWhite);
+            // Clear screen
+            Window.ClearBackground(Color.OffWhite);
 
-                // Move player based on spacebar input
-                bool jumpPressed = Input.IsKeyboardKeyDown(KeyboardInput.Space);
-                player.Move(jumpPressed);
+            // Handle player movement
+            bool jumpPressed = Input.IsKeyboardKeyDown(KeyboardInput.Space);
+            player.Move(jumpPressed);
 
-                // Check for collision
-                //if (Collision.Check(player, obstacle))
-                // {
-                //    // Reset score on collision
-                //    score = 0;
-                // }
-                // ^ Use this spot for collision update call
+            // Move obstacle
+            obstacle.Move();
 
-                // Draw Elements
-                DrawPlayer();
-                DrawScore();
+            // Check for collision
+            if (obstacle.CheckCollision(player))
+            {
+                score = 0; // Reset score on collision
             }
-            
+
+            // Draw elements
+            DrawPlatform();
+            player.Render();
+            obstacle.Render();
+            DrawScore();
         }
 
-        public void DrawPlayer()
+        private void DrawPlatform()
         {
             Draw.FillColor = Color.DarkGray;
             Draw.Rectangle(0, platformHeight + 20, 400, 10);
